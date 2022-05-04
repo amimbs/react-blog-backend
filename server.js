@@ -15,19 +15,19 @@ app.get('/', (req, res) => {
     res.json({ hello: 'hello world'})
 });
 
-app.get('/app', (req, res) => {
-    models.Blog_Posts.findAll().then(all_posts => {
+app.get('/posts', (req, res) => {
+    models.Blog_Posts.findAll({attributes: ['id', 'title', 'createdAt']}).then(all_posts => {
         res.json(all_posts)
     });
 });
 
-app.get('/app/:id', (req, res) => {
+app.get('/posts/:id', (req, res) => {
     let id = parseInt(req.params.id);
     models.Blog_Posts.findByPk(id).then((post) => {
         if (!post) {
             res. json({erros: 'Invalid ID'})
         } else {
-            res.json({title: post.title, body: post.body});
+            res.json({title: post.title, body: post.body, createdAt: post.createdAt});
         };
     });
 });
